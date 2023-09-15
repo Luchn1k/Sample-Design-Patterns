@@ -1,0 +1,48 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ChainOfResponsibility;
+
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+
+/**
+ *
+ * @author Luchn1k
+ */
+public class ValidateEmail extends Validation {
+
+    @Override
+    public void validate(Details detail) {
+        String email = detail.getEmail().getText().replace("Enter Your Email...", "").trim();
+        Border border;
+        Color color;
+        String regexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        if (email.isEmpty()) {
+            color = new Color(184, 15, 10);
+            border = BorderFactory.createLineBorder(color, 1);
+            detail.getEmail().setBorder(border);
+            detail.getEmail().requestFocus();
+            ImageIcon icon = new ImageIcon("src/images/email.png");
+            JOptionPane.showMessageDialog(detail.getFrame(), "Need a email to register", "Error", JOptionPane.ERROR_MESSAGE, icon);
+        } else if (!email.matches(regexPattern)) {
+            color = new Color(184, 15, 10);
+            border = BorderFactory.createLineBorder(color, 1);
+            detail.getEmail().setBorder(border);
+            detail.getEmail().requestFocus();
+            ImageIcon icon = new ImageIcon("src/images/email.png");
+            JOptionPane.showMessageDialog(detail.getFrame(), "Invalid Email Format", "Error", JOptionPane.ERROR_MESSAGE, icon);
+        } else {
+            color = new Color(80, 200, 90);
+            border = BorderFactory.createLineBorder(color, 1);
+            detail.getEmail().setBorder(border);
+            this.getNext().validate(detail);
+        }
+    }
+
+}
